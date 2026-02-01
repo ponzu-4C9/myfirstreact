@@ -1,7 +1,5 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
-import { db } from './firebase';
-import { collection, addDoc, onSnapshot, query, orderBy, Timestamp } from 'firebase/firestore';
 import "./style.css"
 
 interface post {
@@ -13,36 +11,12 @@ export default function Home() {
   const [inputText, setInputText] = useState("");
   const [posts, setPosts] = useState<post[]>([]);
 
-  useEffect(() => {
-    // Firestoreからデータを取得（作成日時順）
-    const q = query(collection(db, "posts"), orderBy("date", "desc"));
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const postData = snapshot.docs.map(doc => {
-        const data = doc.data();
-        return {
-          date: (data.date as Timestamp).toDate(),
-          mainText: data.mainText,
-        } as post;
-      });
-      setPosts(postData);
-    });
-    return () => unsubscribe(); // クリーンアップ
-  }, []);
-
-
-  const handleClick = async () => {
+  const handleClick = () => {
     if (inputText === "") return;
 
-    // Firestoreへ追加
-    try {
-      await addDoc(collection(db, "posts"), {
-        date: Timestamp.now(),
-        mainText: inputText
-      });
-      setInputText("");
-    } catch (e) {
-      console.error("Error adding document: ", e);
-    }
+    setPosts([...posts, { date: new Date(), mainText: inputText }]);
+
+    setInputText("");
   }
   return (
     <div className='root'>
