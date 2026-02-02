@@ -69,3 +69,19 @@ button {
 button:hover {
   background-color: #0056b3;
 }
+
+.contextMenu {
+  border: 1px solid #ccc;
+}
+
+.contextMenu li {
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.contextMenu li:hover {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+}
