@@ -2,14 +2,14 @@
 import { useState, useEffect, useRef } from 'react';
 import "./style.css"
 
-interface post {
+interface Post {
   date: Date;
   mainText: string;
 }
 
 export default function Home() {
   const [inputText, setInputText] = useState("");
-  const [posts, setPosts] = useState<post[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
 
   const handleClick = () => {
     if (inputText === "") return;
@@ -23,10 +23,7 @@ export default function Home() {
 
 
       {posts.map((post) => (
-        <div className='postBlock' key={post.date.toISOString()}>
-          <p className='postDate'>{post.date.toLocaleString("ja-JP")}</p>
-          <p className="postMainText">{post.mainText}</p>
-        </div>
+        <PostBlock postData={post} key={post.date.toISOString()} />
       ))}
 
 
@@ -43,7 +40,14 @@ export default function Home() {
     </div>
   );
 }
-
+function PostBlock({ postData }: { postData: Post }) {
+  return (
+    <div className='postBlock' key={postData.date.toISOString()}>
+      <p className='postDate'>{postData.date.toLocaleString("ja-JP")}</p>
+      <p className="postMainText">{postData.mainText}</p>
+    </div>
+  )
+}
 function Txtbox({ value, onChange, onSubmit }: {
   value: string,
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void,
