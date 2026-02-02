@@ -15,10 +15,13 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-    const { mainText } = await request.json();
+    const mainText  = await request.json();
     const result = await pool.query(
         'INSERT INTO posts (main_text) VALUES ($1) RETURNING *',
         [mainText]
     );
     return NextResponse.json(result.rows[0]);
 }
+
+export async function DELETE(request: Request) {
+    const id  = await request.json();

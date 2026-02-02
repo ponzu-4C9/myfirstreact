@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import "./style.css"
 
 interface Post {
+  id: number;
   date: Date;
   mainText: string;
 }
@@ -11,12 +12,38 @@ export default function Home() {
   const [inputText, setInputText] = useState("");
   const [posts, setPosts] = useState<Post[]>([]);
 
-  const handleClick = () => {
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const response = await fetch('/api/posts');
+      const data = await response.json();
+
+      const mappedPosts = data.map((p: any) => ({
+        id: p.id,
+        date: new Date(p.created_at),
+        mainText: p.main_text
+      }));
+
+      setPosts(mappedPosts);
+    };
+
+    fetchPosts();
+  }, []);
+
+  const handleClick = async () => {
     if (inputText === "") return;
+
+
 
     setPosts([...posts, { date: new Date(), mainText: inputText }]);
 
     setInputText("");
+
+    const response = await fetch('/api/posts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mainText: inputText }),
+    });
+    const newPost = await response.json(); // 保存された新しい投稿1件が取得できる
   }
 
   return (
@@ -41,6 +68,8 @@ export default function Home() {
     </div>
   );
 }
+
+
 function PostBlock({ postData }: { postData: Post }) {
   const [showMenu, setShowMenu] = useState(false);
   const [menuPos, setMenuPos] = useState({ x: 0, y: 0 });
@@ -72,7 +101,9 @@ function PostBlock({ postData }: { postData: Post }) {
           style={{ top: menuPos.y, left: menuPos.x }}
         >
           <ul>
-            <li onClick={() => alert("削除しました")}>削除する</li>
+            <li onClick={() => {
+
+            }}>削除する</li>
             <li onClick={() => alert("コピーしました")}>コピーする</li>
           </ul>
         </div>
