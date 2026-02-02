@@ -18,6 +18,7 @@ export default function Home() {
 
     setInputText("");
   }
+
   return (
     <div className='root'>
 
@@ -68,7 +69,7 @@ function Txtbox({ value, onChange, onSubmit }: {
 
     if (e.nativeEvent.isComposing) return;
 
-    if (e.key === 'Enter' && e.shiftKey) {
+    if (e.key === 'Enter') {
       e.preventDefault();
       onSubmit();
     }
