@@ -71,7 +71,12 @@ button:hover {
 }
 
 .contextMenu {
+  position: absolute; /* これを追加 */
+  z-index: 1000;      /* 他の要素より前面に表示 */
+  background-color: white; /* 背景色を設定 */
   border: 1px solid #ccc;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.2); /* 影をつけて見やすく */
+  min-width: 120px;
 }
 
 .contextMenu li {

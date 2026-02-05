@@ -23,5 +23,5 @@ export async function POST(request: Request) {
     return NextResponse.json(result.rows[0]);
 }
 
-export async function DELETE(request: Request) {
-    const id  = await request.json();
+// export async function DELETE(request: Request) {
+//     const id  = await request.json();
