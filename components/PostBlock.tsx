@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Post } from '../types/post';
 
-export default function PostBlock({ postData }: { postData: Post }) {
+export default function PostBlock({ postData, posts, setPosts }: { postData: Post, posts: Post[], setPosts: React.Dispatch<React.SetStateAction<Post[]>> }) {
     const [showMenu, setShowMenu] = useState(false);
     const [menuPos, setMenuPos] = useState({ x: 0, y: 0 });
 
@@ -14,9 +14,19 @@ export default function PostBlock({ postData }: { postData: Post }) {
 
     useEffect(() => {
         const closeMenu = () => setShowMenu(false);
-        window.addEventListener('mousedown', closeMenu);
-        return () => window.removeEventListener('mousedown', closeMenu);
+        window.addEventListener('click', closeMenu);
+        return () => window.removeEventListener('click', closeMenu);
     }, []);
+
+    const handleDelete = async (id: number) => {
+        await fetch(`/api/posts`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(id),
+        });
+        setShowMenu(false);
+        setPosts(posts.filter(p => p.id !== id));
+    }
 
     return (
         <div
@@ -31,15 +41,15 @@ export default function PostBlock({ postData }: { postData: Post }) {
                 <div
                     className="contextMenu"
                     style={{ top: menuPos.y, left: menuPos.x }}
+                    onMouseDown={(e) => e.stopPropagation()}
                 >
                     <ul>
-                        <li onClick={() => {
-
-                        }}>削除する</li>
+                        <li onClick={() => handleDelete(postData.id)}>削除する</li>
                         <li onClick={() => alert("コピーしました")}>コピーする</li>
                     </ul>
                 </div>
-            )}
-        </div>
+            )
+            }
+        </div >
     )
 }

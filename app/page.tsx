@@ -50,7 +50,7 @@ export default function Home() {
 
 
       {posts.map((post) => (
-        <PostBlock postData={post} key={post.id} />
+        <PostBlock postData={post} key={post.id} posts={posts} setPosts={setPosts} />
       ))}
 
 
