@@ -49,10 +49,12 @@ export default function Home() {
     <div className='root'>
 
 
-      {posts.map((post) => (
-        <PostBlock postData={post} key={post.id} posts={posts} setPosts={setPosts} />
-      ))}
-
+      {posts
+        .slice()
+        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+        .map((post) => (
+          <PostBlock postData={post} key={post.id} posts={posts} setPosts={setPosts} />
+        ))}
 
       <div >
         <Txtbox

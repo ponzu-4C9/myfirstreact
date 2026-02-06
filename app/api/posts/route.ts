@@ -10,15 +10,16 @@ const pool = new Pool({
 });
 
 export async function GET() {
-    const result = await pool.query('SELECT * FROM posts ORDER BY created_at DESC');
+    const result = await pool.query('SELECT * FROM posts ORDER BY created_at ASC');
     return NextResponse.json(result.rows);
 }
 
 export async function POST(request: Request) {
-    const mainText  = await request.json();
+    const txt  = (await request.json()).mainText;
+    console.log("received mainText:", txt);
     const result = await pool.query(
         'INSERT INTO posts (main_text) VALUES ($1) RETURNING *',
-        [mainText]
+        [txt]
     );
     return NextResponse.json(result.rows[0]);
 }

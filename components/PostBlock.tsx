@@ -28,6 +28,11 @@ export default function PostBlock({ postData, posts, setPosts }: { postData: Pos
         setPosts(posts.filter(p => p.id !== id));
     }
 
+    const handleCopy = (text: string) => {
+        navigator.clipboard.writeText(text);
+        setShowMenu(false);
+    }
+
     return (
         <div
             className='postBlock'
@@ -45,7 +50,7 @@ export default function PostBlock({ postData, posts, setPosts }: { postData: Pos
                 >
                     <ul>
                         <li onClick={() => handleDelete(postData.id)}>削除する</li>
-                        <li onClick={() => alert("コピーしました")}>コピーする</li>
+                        <li onClick={() => handleCopy(postData.mainText)}>コピーする</li>
                     </ul>
                 </div>
             )
