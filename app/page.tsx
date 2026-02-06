@@ -24,6 +24,9 @@ export default function Home() {
     };
 
     fetchPosts();
+
+    const interval = setInterval(fetchPosts, 3000);
+    return () => clearInterval(interval); // クリーンアップ
   }, []);
 
   const handleClick = async () => {
