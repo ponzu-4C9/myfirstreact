@@ -2,7 +2,15 @@
 import { useState, useEffect, useRef } from 'react';
 import { Post } from '../types/post';
 
-export default function PostBlock({ postData, posts, setPosts }: { postData: Post, posts: Post[], setPosts: React.Dispatch<React.SetStateAction<Post[]>> }) {
+export default function PostBlock(
+    { postData, posts, setPosts, handlesetIsEditing }:
+        {
+            postData: Post, posts: Post[],
+            setPosts: React.Dispatch<React.SetStateAction<Post[]>>,
+            handlesetIsEditing: (id: number) => void
+        }) {
+
+
     const [showMenu, setShowMenu] = useState(false);
     const [menuPos, setMenuPos] = useState({ x: 0, y: 0 });
 
@@ -50,6 +58,7 @@ export default function PostBlock({ postData, posts, setPosts }: { postData: Pos
                 >
                     <ul>
                         <li onClick={() => handleDelete(postData.id)}>削除する</li>
+                        <li onClick={() => handlesetIsEditing(postData.id)}>編集する</li>
                         <li onClick={() => handleCopy(postData.mainText)}>コピーする</li>
                     </ul>
                 </div>

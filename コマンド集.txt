@@ -1,0 +1,6 @@
+ コンテナの機動のやり方
+まず、docker for desktopを起動する
+次に、ターミナル(wsl)でdocker compose -f docker-compose.yml -f docker-compose.dev.yml up -dを実行
+ブラウザで"http://localhost"にアクセスする。このとき、ポート番号はdocker-compose.ymlで指定したものを使う.つまり、今回の場合は80番ポート
+
+
