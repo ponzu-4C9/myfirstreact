@@ -4,3 +4,7 @@
 ブラウザで"http://localhost"にアクセスする。このとき、ポート番号はdocker-compose.ymlで指定したものを使う.つまり、今回の場合は80番ポート
 
 
+　鯖でのコンテナ起動のやりかた
+sudo docker compose up -d --build
+
+　
