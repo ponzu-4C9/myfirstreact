@@ -34,9 +34,6 @@ export default function Home() {
     const currentMaxId = posts.length > 0 ? Math.max(...posts.map(p => p.id)) : 0;
     const nextId = currentMaxId + 1;
 
-
-    setPosts([...posts, { id: nextId, date: new Date(), mainText: inputText }]);
-
     setInputText("");
 
     const response = await fetch('/api/posts', {
@@ -45,6 +42,7 @@ export default function Home() {
       body: JSON.stringify({ mainText: inputText }),
     });
     const newPost = await response.json(); // 保存された新しい投稿1件が取得できる
+    setPosts([...posts, { id: nextId, date: new Date(), mainText: newPost.main_text }]);
   }
 
   function handlesetIsEditing(id: number) {
@@ -54,13 +52,20 @@ export default function Home() {
 
   async function handleEditSubmit(id: number) {
     if (editText === "") return;
+    const response = await fetch('/api/posts', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: id, mainText: editText }),
+    });
+    const updatedPost = await response.json();
+
     setPosts(
       posts.map(p =>
-        p.id === id ? { ...p, mainText: editText } : p
+        p.id === id ? { ...p, mainText: updatedPost.main_text } : p
       )
     );
     setIsEditing(-1);
-    setEditText(""); // 編集が終わったら中身をクリアする
+    setEditText("");
   }
 
 

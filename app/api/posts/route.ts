@@ -1,5 +1,6 @@
 import { Pool } from 'pg';
 import { NextResponse } from 'next/server';
+import { exp } from 'firebase/firestore/pipelines';
 
 const pool = new Pool({
     user: process.env.POSTGRES_USER,
@@ -20,6 +21,15 @@ export async function POST(request: Request) {
     const result = await pool.query(
         'INSERT INTO posts (main_text) VALUES ($1) RETURNING *',
         [txt]
+    );
+    return NextResponse.json(result.rows[0]);
+}
+
+export async function PUT(request: Request) {
+    const { id, mainText } = await request.json();
+    const result = await pool.query(
+        'UPDATE posts SET main_text = $1 WHERE id = $2 RETURNING *',
+        [mainText, id]
     );
     return NextResponse.json(result.rows[0]);
 }
